@@ -4,12 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Script Key System</title>
+
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
@@ -21,7 +23,7 @@
       justify-content: space-between;
     }
 
-    /* Header Navigation */
+    /* HEADER */
     header {
       display: flex;
       justify-content: space-between;
@@ -70,7 +72,7 @@
       color: #6b7280;
     }
 
-    /* Main Container */
+    /* MAIN */
     main {
       flex: 1;
       display: flex;
@@ -128,7 +130,7 @@
       line-height: 1.4;
     }
 
-    /* Progress Bar */
+    /* PROGRESS */
     .progress-info {
       display: flex;
       justify-content: space-between;
@@ -153,7 +155,7 @@
       transition: width 0.3s ease;
     }
 
-    /* Task Item */
+    /* TASK */
     .task-box {
       background: #1a2332;
       border: 1px solid #2d3748;
@@ -214,7 +216,12 @@
       background: #38c1ff;
     }
 
-    /* Unlock Button */
+    .btn-action:disabled {
+      cursor: not-allowed;
+      opacity: 0.8;
+    }
+
+    /* UNLOCK */
     .btn-submit {
       width: 100%;
       padding: 0.85rem;
@@ -241,7 +248,7 @@
       color: #6b7280;
     }
 
-    /* Footer */
+    /* FOOTER */
     footer {
       text-align: center;
       padding: 1.5rem;
@@ -249,89 +256,632 @@
       color: #4b5563;
       border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
+
+    /* =========================================
+       EMBEDDED BROWSER
+       ========================================= */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      z-index: 9999;
+      padding: 14px;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .browser-window {
+      width: min(900px, 100%);
+      height: min(730px, 95vh);
+
+      background: #0b0f19;
+      border: 1px solid #164e63;
+      border-radius: 24px;
+      overflow: hidden;
+
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(0, 178, 254, 0.08);
+
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOP BAR */
+    .browser-top {
+      height: 56px;
+      background: #111827;
+
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      padding: 0 14px;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    .traffic-lights {
+      display: flex;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .traffic-lights span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .red {
+      background: #ef4444;
+    }
+
+    .yellow {
+      background: #f59e0b;
+    }
+
+    .green {
+      background: #10b981;
+    }
+
+    .browser-url {
+      flex: 1;
+      color: #9ca3af;
+      font-size: 12px;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .close-browser {
+      width: 34px;
+      height: 34px;
+
+      border: 0;
+      border-radius: 8px;
+
+      background: #243042;
+      color: #94a3b8;
+
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .close-browser:hover {
+      background: #334155;
+      color: white;
+    }
+
+    /* INFO BAR */
+    .browser-info {
+      min-height: 32px;
+
+      padding: 7px 15px;
+
+      background: #17153c;
+      color: #cbd5e1;
+
+      font-size: 11px;
+
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .browser-info span {
+      color: #22d3ee;
+    }
+
+    /* IFRAME */
+    #robloxFrame {
+      width: 100%;
+      flex: 1;
+
+      border: 0;
+      background: white;
+    }
+
+    /* BOTTOM BAR */
+    .browser-bottom {
+      height: 64px;
+
+      padding: 0 16px;
+
+      background: #0f172a;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    .browser-bottom b {
+      color: #34d399;
+      font-weight: 500;
+    }
+
+    .browser-bottom button {
+      background: #1e293b;
+      color: #cbd5e1;
+
+      border: 0;
+      border-radius: 10px;
+
+      padding: 9px 18px;
+
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .browser-bottom button:hover {
+      background: #334155;
+      color: #fff;
+    }
+
+    /* MOBILE */
+    @media (max-width: 600px) {
+
+      header {
+        padding: 1rem;
+      }
+
+      .card {
+        padding: 2rem 1rem;
+      }
+
+      .task-box {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+      }
+
+      .btn-action {
+        justify-content: center;
+      }
+
+      .modal-overlay {
+        padding: 0;
+      }
+
+      .browser-window {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+      }
+
+      .browser-top {
+        height: 52px;
+      }
+
+      .browser-bottom {
+        height: 58px;
+      }
+    }
   </style>
 </head>
+
 <body>
+
+  <!-- =========================================
+       HEADER
+       ========================================= -->
 
   <header>
     <div class="brand">
-      <div class="brand-icon">🛡️</div>
-      <div>
-        <div class="brand-title">Your Script Key System <span class="badge">VERIFIED</span></div>
-        <div class="brand-sub">In-App Verification Gateway</div>
+
+      <div class="brand-icon">
+        🛡️
       </div>
+
+      <div>
+
+        <div class="brand-title">
+          Your Script Key System
+
+          <span class="badge">
+            VERIFIED
+          </span>
+        </div>
+
+        <div class="brand-sub">
+          In-App Verification Gateway
+        </div>
+
+      </div>
+
     </div>
   </header>
 
+
+  <!-- =========================================
+       MAIN CONTENT
+       ========================================= -->
+
   <main>
+
     <div class="card">
+
       <div class="status-pill">
-        <span class="status-dot"></span> Embedded Verification Active
+        <span class="status-dot"></span>
+        Embedded Verification Active
       </div>
 
-      <h1>Unlock <span>Your Script</span></h1>
-      <p class="subtitle">Complete the task below directly inside our embedded popup window to instantly unlock your access key.</p>
+
+      <h1>
+        Unlock <span>Your Script</span>
+      </h1>
+
+
+      <p class="subtitle">
+        Complete the task below directly inside our
+        embedded popup window to instantly unlock
+        your access key.
+      </p>
+
+
+      <!-- PROGRESS -->
 
       <div class="progress-info">
-        <span id="progress-text">Progress: 0 / 1 Task Completed</span>
-        <span id="progress-percent">0%</span>
+
+        <span id="progress-text">
+          Progress: 0 / 1 Task Completed
+        </span>
+
+        <span id="progress-percent">
+          0%
+        </span>
+
       </div>
+
+
       <div class="progress-bar-bg">
-        <div class="progress-bar-fill" id="progress-bar"></div>
+
+        <div
+          class="progress-bar-fill"
+          id="progress-bar">
+        </div>
+
       </div>
+
+
+      <!-- TASK -->
 
       <div class="task-box">
+
         <div class="task-left">
-          <div class="task-number">1</div>
-          <div>
-            <div class="task-title">Join Roblox Group</div>
-            <div class="task-sub">Join the Roblox Group</div>
+
+          <div class="task-number">
+            1
           </div>
+
+          <div>
+
+            <div class="task-title">
+              Join Roblox Group
+            </div>
+
+            <div class="task-sub">
+              Join the Roblox Group
+            </div>
+
+          </div>
+
         </div>
-        <button class="btn-action" id="task-btn" onclick="completeTask()">
+
+
+        <button
+          class="btn-action"
+          id="task-btn"
+          onclick="openRoblox()">
+
           📋 Join Group
+
         </button>
+
       </div>
 
-      <button class="btn-submit" id="unlock-btn" disabled>
+
+      <!-- UNLOCK BUTTON -->
+
+      <button
+        class="btn-submit"
+        id="unlock-btn"
+        disabled>
+
         🔒 COMPLETE EMBEDDED TASK FIRST
+
       </button>
 
-      <p class="note">🛡️ Direct script generation • Zero external tab redirects needed</p>
+
+      <p class="note">
+        🛡️ Direct script generation •
+        Zero external tab redirects needed
+      </p>
+
     </div>
+
   </main>
 
+
+  <!-- =========================================
+       FOOTER
+       ========================================= -->
+
   <footer>
-    © 2026 Your Script System. Ready for GitHub Pages deployment.
+    © 2026 Your Script System.
+    Ready for GitHub Pages deployment.
   </footer>
 
-  <script>
-    function completeTask() {
-      // Direct user to target link
-      window.open("https://www.roblox.com", "_blank");
 
-      // Simulate completion logic
-      const btn = document.getElementById("task-btn");
-      btn.innerText = "✓ Completed";
-      btn.style.background = "#10b981";
-      btn.style.color = "#ffffff";
+  <!-- =========================================
+       EMBEDDED ROBLOX WINDOW
+       ========================================= -->
+
+  <div
+    id="robloxModal"
+    class="modal-overlay">
+
+    <div class="browser-window">
+
+
+      <!-- BROWSER TOP -->
+
+      <div class="browser-top">
+
+        <div class="traffic-lights">
+
+          <span class="red"></span>
+          <span class="yellow"></span>
+          <span class="green"></span>
+
+        </div>
+
+
+        <div
+          class="browser-url"
+          id="browserUrl">
+
+          Loading Roblox Community...
+
+        </div>
+
+
+        <button
+          class="close-browser"
+          onclick="closeRoblox()">
+
+          ✕
+
+        </button>
+
+      </div>
+
+
+      <!-- INFO BAR -->
+
+      <div class="browser-info">
+
+        <span>ⓘ</span>
+
+        <b>
+          Embedded Group Page:
+        </b>
+
+        Join the group directly inside
+        the frame below.
+
+      </div>
+
+
+      <!-- ROBLOX -->
+
+      <iframe
+        id="robloxFrame"
+        allow="clipboard-write">
+      </iframe>
+
+
+      <!-- BOTTOM BAR -->
+
+      <div class="browser-bottom">
+
+        <span>
+
+          Status:
+
+          <b id="browserStatus">
+            Group page loaded.
+          </b>
+
+        </span>
+
+
+        <button
+          onclick="confirmJoined()">
+
+          ✓ I've Joined
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================
+       JAVASCRIPT
+       ========================================= -->
+
+  <script>
+
+    /*
+     * ==========================================
+     * ILAGAY DITO ANG ROBLOX GROUP LINK MO
+     * ==========================================
+     */
+
+    const GROUP_LINK =
+      "https://www.roblox.com/communities/7070715372/";
+
+
+    /*
+     * OPEN ROBLOX WINDOW
+     */
+
+    function openRoblox() {
+
+      const modal =
+        document.getElementById("robloxModal");
+
+      const frame =
+        document.getElementById("robloxFrame");
+
+      const url =
+        document.getElementById("browserUrl");
+
+      const status =
+        document.getElementById("browserStatus");
+
+
+      frame.src = GROUP_LINK;
+
+      url.innerText = GROUP_LINK;
+
+      status.innerText = "Group page loaded.";
+
+
+      modal.classList.add("show");
+
+      document.body.style.overflow = "hidden";
+
+    }
+
+
+    /*
+     * CLOSE ROBLOX WINDOW
+     */
+
+    function closeRoblox() {
+
+      const modal =
+        document.getElementById("robloxModal");
+
+      modal.classList.remove("show");
+
+      document.body.style.overflow = "";
+
+    }
+
+
+    /*
+     * CONFIRM TASK
+     */
+
+    function confirmJoined() {
+
+      closeRoblox();
+
+
+      const btn =
+        document.getElementById("task-btn");
+
+
+      btn.innerText =
+        "✓ Completed";
+
+      btn.style.background =
+        "#10b981";
+
+      btn.style.color =
+        "#ffffff";
+
       btn.disabled = true;
 
-      // Update progress bar
-      document.getElementById("progress-bar").style.width = "100%";
-      document.getElementById("progress-text").innerText = "Progress: 1 / 1 Task Completed";
-      document.getElementById("progress-percent").innerText = "100%";
 
-      // Enable unlock button
-      const unlockBtn = document.getElementById("unlock-btn");
-      unlockBtn.innerText = "🔓 GET YOUR ACCESS KEY";
+      /*
+       * PROGRESS
+       */
+
+      document.getElementById("progress-bar")
+        .style.width = "100%";
+
+
+      document.getElementById("progress-text")
+        .innerText =
+        "Progress: 1 / 1 Task Completed";
+
+
+      document.getElementById("progress-percent")
+        .innerText = "100%";
+
+
+      /*
+       * UNLOCK BUTTON
+       */
+
+      const unlockBtn =
+        document.getElementById("unlock-btn");
+
+
+      unlockBtn.innerText =
+        "🔓 GET YOUR ACCESS KEY";
+
+
       unlockBtn.classList.add("active");
+
       unlockBtn.disabled = false;
 
+
+      /*
+       * GET KEY
+       */
+
       unlockBtn.onclick = function() {
-        alert("Your Key: KEY-" + Math.random().toString(36).substr(2, 9).toUpperCase());
+
+        const key =
+          "KEY-" +
+          Math.random()
+            .toString(36)
+            .substr(2, 9)
+            .toUpperCase();
+
+
+        alert("Your Key: " + key);
+
       };
+
     }
+
+
+    /*
+     * CLOSE WHEN CLICKING OUTSIDE
+     */
+
+    document
+      .getElementById("robloxModal")
+      .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+          closeRoblox();
+        }
+
+      });
+
   </script>
+
 </body>
 </html>
